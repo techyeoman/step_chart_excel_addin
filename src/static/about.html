@@ -19,10 +19,13 @@
     a { color: var(--accent); }
     code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 90%; overflow-wrap: anywhere; }
     .muted { color: var(--muted); }
-    .downloads { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
-    .downloads a { display: inline-block; padding: 8px 14px; border: 1px solid var(--accent); border-radius: 6px; text-decoration: none; }
-    .downloads a.primary { background: var(--accent); color: #fff; }
     ol li, ul li { margin-bottom: 4px; }
+    .cmd { position: relative; margin: 8px 0 10px; }
+    .cmd pre { background: var(--code); border: 1px solid var(--line); border-radius: 6px; padding: 10px 64px 10px 12px; margin: 0; white-space: pre-wrap; word-break: break-all; font-size: 12.5px; }
+    .cmd pre code { background: none; padding: 0; }
+    .copy { position: absolute; top: 6px; right: 6px; font: inherit; font-size: 12px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--bg); color: var(--fg); cursor: pointer; }
+    details { margin: 4px 0 14px; }
+    summary { cursor: pointer; color: var(--accent); }
   </style>
 </head>
 <body>
@@ -40,38 +43,51 @@
     Works in Excel for Mac, Windows (Microsoft 365, Office 2021/2024) and Excel on the web.</p>
 
   <h2 id="install">Install</h2>
-  <div class="downloads">
-    <a class="primary" href="manifest.xml" download>Download manifest.xml</a>
-    <a href="probability-step-chart.zip" download>Microsoft 365 app package (.zip)</a>
-    <a href="https://github.com/techyeoman/step_chart_excel_addin">Source on GitHub</a>
-  </div>
-  <p class="muted">Both files point to the add-in hosted on this site, so updates arrive automatically the next
-    time the task pane opens.</p>
+  <p>Pick your platform and paste one command. No administrator rights or Microsoft 365 sign-in are needed. The
+    command installs a small manifest file that points Excel at this site, so later updates arrive automatically the
+    next time the task pane opens. You only need to run it again if you are told the add-in's manifest changed.</p>
 
   <h3>Excel for Mac</h3>
   <ol>
-    <li>Quit Excel and download <code>manifest.xml</code>.</li>
-    <li>In Terminal, create Excel's add-in folder and copy the manifest into it:<br />
-      <code>mkdir -p ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef &amp;&amp; cp ~/Downloads/manifest.xml ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/</code></li>
-    <li>Open Excel and a workbook, then choose <b>Home › Add-ins</b> and pick <b>Probability Step Chart</b>.</li>
+    <li>Quit Excel.</li>
+    <li>Open <b>Terminal</b> (Applications › Utilities), paste this command and press Return:
+      <div class="cmd"><button type="button" class="copy" aria-label="Copy Mac install command">Copy</button><pre><code>mkdir -p ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef &amp;&amp; curl -fsSL https://localhost:3000/manifest.xml -o ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/probability-step-chart.xml &amp;&amp; echo "Installed. Restart Excel, then choose Home &gt; Add-ins."</code></pre></div></li>
+    <li>Open Excel and any workbook, then choose <b>Home › Add-ins</b> and pick <b>Probability Step Chart</b>. The
+      <b>Step Chart</b> button then appears on the Home tab.</li>
   </ol>
+  <details><summary>Uninstall on Mac</summary>
+    <div class="cmd"><button type="button" class="copy" aria-label="Copy Mac uninstall command">Copy</button><pre><code>rm -f ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/probability-step-chart.xml &amp;&amp; echo "Removed. Restart Excel."</code></pre></div>
+  </details>
+
+  <h3>Excel for Windows</h3>
+  <ol>
+    <li>Quit Excel.</li>
+    <li>Open <b>PowerShell</b> (Start menu › type <i>PowerShell</i>; it does not need to run as administrator), paste
+      this command and press Enter:
+      <div class="cmd"><button type="button" class="copy" aria-label="Copy Windows install command">Copy</button><pre><code>[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; $d = "$env:LOCALAPPDATA\ProbabilityStepChart"; $k = "HKCU:\Software\Microsoft\Office\16.0\WEF\Developer"; New-Item -ItemType Directory -Force -Path $d | Out-Null; Invoke-WebRequest -UseBasicParsing -Uri "https://localhost:3000/manifest.xml" -OutFile "$d\manifest.xml"; if (-not (Test-Path $k)) { New-Item -Path $k -Force | Out-Null }; New-ItemProperty -Path $k -Name "06577db0-4105-4e43-9a65-aaad5db9a70c" -Value "$d\manifest.xml" -PropertyType String -Force | Out-Null; Write-Host "Installed. Restart Excel, then choose Home &gt; Add-ins."</code></pre></div></li>
+    <li>Open Excel and any workbook, then choose <b>Home › Add-ins</b> and pick <b>Probability Step Chart</b> (listed
+      under <i>Developer Add-ins</i> if Excel shows sections).</li>
+  </ol>
+  <details><summary>Uninstall on Windows</summary>
+    <div class="cmd"><button type="button" class="copy" aria-label="Copy Windows uninstall command">Copy</button><pre><code>Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Office\16.0\WEF\Developer" -Name "06577db0-4105-4e43-9a65-aaad5db9a70c" -ErrorAction SilentlyContinue; Remove-Item -Path "$env:LOCALAPPDATA\ProbabilityStepChart" -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "Removed. Restart Excel."</code></pre></div>
+  </details>
 
   <h3>Excel on the web</h3>
   <ol>
-    <li>Open a workbook at office.com and choose <b>Home › Add-ins › More Add-ins</b>.</li>
-    <li>Choose <b>My Add-ins › Upload My Add-in</b> and select <code>manifest.xml</code>.</li>
+    <li>Download <a href="manifest.xml" download>manifest.xml</a>.</li>
+    <li>Open a workbook at office.com and choose <b>Home › Add-ins › More Add-ins › My Add-ins › Upload My Add-in</b>,
+      then select the file. (Some organisations' accounts block this; a personal Microsoft account works.)</li>
   </ol>
 
-  <h3>Excel for Windows</h3>
-  <ul>
-    <li><b>Microsoft 365:</b> in Teams choose <b>Apps › Manage your apps › Upload an app › Upload a custom app</b> and select the
-      <code>.zip</code> package, then restart Excel. Use the same Microsoft 365 account as in Excel.</li>
-    <li><b>Any version:</b> put <code>manifest.xml</code> in a shared network folder, add that folder under <b>File › Options ›
-      Trust Center › Trust Center Settings › Trusted Add-in Catalogs</b> (tick <i>Show in Menu</i>), restart Excel,
-      then <b>Home › Add-ins › More Add-ins › Shared Folder</b>.</li>
-    <li><b>Organisations:</b> an administrator can deploy the <code>.zip</code> or <code>manifest.xml</code> from the Microsoft 365
-      admin center under <b>Settings › Integrated apps</b>.</li>
-  </ul>
+  <details><summary>Other options (Microsoft 365 app package, organisation-wide deployment)</summary>
+    <ul>
+      <li><a href="probability-step-chart.zip" download>Microsoft 365 app package (.zip)</a>: upload in Teams via
+        <b>Apps › Manage your apps › Upload an app › Upload a custom app</b>, using the same account as Excel.</li>
+      <li>Administrators can deploy the <code>.zip</code> or <a href="manifest.xml" download>manifest.xml</a> from the
+        Microsoft 365 admin center under <b>Settings › Integrated apps</b>.</li>
+      <li>Source code: <a href="https://github.com/techyeoman/step_chart_excel_addin">github.com/techyeoman/step_chart_excel_addin</a>.</li>
+    </ul>
+  </details>
 
   <h2>How to use</h2>
   <ol>
@@ -95,5 +111,18 @@
   <p>Released under the <a href="https://github.com/techyeoman/step_chart_excel_addin/blob/main/LICENSE">MIT License</a>,
     © 2026 Evin Grano. Provided "as is", without warranty of any kind. Verify results before relying on them for
     decisions.</p>
+  <script>
+    document.querySelectorAll(".copy").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var text = button.parentElement.querySelector("code").textContent;
+        var done = function () { button.textContent = "Copied"; setTimeout(function () { button.textContent = "Copy"; }, 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () { button.textContent = "Select and copy"; });
+        } else {
+          button.textContent = "Select and copy";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
