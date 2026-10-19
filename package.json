@@ -1,0 +1,54 @@
+{
+  "name": "probability-step-chart",
+  "version": "1.0.0",
+  "description": "Excel add-in that turns discrete probability distributions into CDF step-chart coordinates, charts them, and tests stochastic dominance.",
+  "private": true,
+  "license": "MIT",
+  "config": {
+    "app_to_debug": "excel",
+    "app_type_to_debug": "desktop",
+    "dev_server_port": 3000
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "dev-server": "webpack serve --mode development",
+    "watch": "webpack --mode development --watch",
+    "preview": "webpack serve --env preview",
+    "start": "office-addin-debugging start manifest.json desktop",
+    "stop": "office-addin-debugging stop manifest.json",
+    "start:xml": "office-addin-debugging start manifest.xml desktop",
+    "stop:xml": "office-addin-debugging stop manifest.xml",
+    "start:web": "office-addin-debugging start manifest.json web",
+    "validate": "office-addin-manifest validate manifest.json && echo \"manifest.json matches the unified manifest schema.\"",
+    "validate:xml": "office-addin-manifest validate manifest.xml",
+    "package": "node scripts/package-app.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "certs": "office-addin-dev-certs install",
+    "check": "tsc --noEmit && vitest run && npm run validate"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.74.10",
+    "@fluentui/react-icons": "^2.0.344",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/office-js": "^1.0.612",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "copy-webpack-plugin": "^14.0.0",
+    "html-webpack-plugin": "^5.6.8",
+    "office-addin-debugging": "^7.0.1",
+    "office-addin-dev-certs": "^3.0.1",
+    "office-addin-manifest": "^3.0.1",
+    "ts-loader": "^9.6.2",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.5",
+    "webpack": "^5.112.0",
+    "webpack-cli": "^7.2.3",
+    "webpack-dev-server": "^6.1.0"
+  }
+}

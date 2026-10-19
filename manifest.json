@@ -1,0 +1,110 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.24/MicrosoftTeams.schema.json",
+  "id": "9e384d73-8775-406a-ae59-4a6fe323b562",
+  "manifestVersion": "1.24",
+  "version": "1.0.0",
+  "name": {
+    "short": "Probability Step Chart",
+    "full": "Probability Step Chart for Excel"
+  },
+  "description": {
+    "short": "Turn discrete probability distributions into CDF step charts.",
+    "full": "Converts a discrete probability distribution (outcomes and probabilities) into the duplicated X/Y coordinates of a cumulative distribution function, draws it as an XY scatter step chart, compares several distributions on the same axes, and checks first- and second-order stochastic dominance."
+  },
+  "developer": {
+    "name": "Probability Step Chart",
+    "websiteUrl": "https://localhost:3000/about.html",
+    "privacyUrl": "https://localhost:3000/about.html#privacy",
+    "termsOfUseUrl": "https://localhost:3000/about.html#terms"
+  },
+  "icons": {
+    "outline": "assets/outline.png",
+    "color": "assets/color.png"
+  },
+  "accentColor": "#1F6FB2",
+  "localizationInfo": {
+    "defaultLanguageTag": "en-us",
+    "additionalLanguages": []
+  },
+  "authorization": {
+    "permissions": {
+      "resourceSpecific": [
+        {
+          "name": "Document.ReadWrite.User",
+          "type": "Delegated"
+        }
+      ]
+    }
+  },
+  "validDomains": [],
+  "extensions": [
+    {
+      "requirements": {
+        "scopes": ["workbook"],
+        "capabilities": [{ "name": "ExcelApi", "minVersion": "1.7" }]
+      },
+      "runtimes": [
+        {
+          "id": "TaskPaneRuntime",
+          "type": "general",
+          "code": {
+            "page": "https://localhost:3000/taskpane.html"
+          },
+          "lifetime": "short",
+          "actions": [
+            {
+              "id": "ShowStepChartPane",
+              "type": "openPage"
+            }
+          ]
+        }
+      ],
+      "ribbons": [
+        {
+          "contexts": ["default"],
+          "tabs": [
+            {
+              "builtInTabId": "TabHome",
+              "groups": [
+                {
+                  "id": "StepChartGroup",
+                  "label": "Probability",
+                  "icons": [
+                    { "size": 16, "url": "https://localhost:3000/assets/icon-16.png" },
+                    { "size": 32, "url": "https://localhost:3000/assets/icon-32.png" },
+                    { "size": 80, "url": "https://localhost:3000/assets/icon-80.png" }
+                  ],
+                  "controls": [
+                    {
+                      "id": "OpenStepChartPane",
+                      "type": "button",
+                      "label": "Step Chart",
+                      "icons": [
+                        { "size": 16, "url": "https://localhost:3000/assets/icon-16.png" },
+                        { "size": 32, "url": "https://localhost:3000/assets/icon-32.png" },
+                        { "size": 80, "url": "https://localhost:3000/assets/icon-80.png" }
+                      ],
+                      "supertip": {
+                        "title": "Probability Step Chart",
+                        "description": "Build cumulative probability (CDF) step charts and compare distributions."
+                      },
+                      "actionId": "ShowStepChartPane"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "alternates": [
+        {
+          "alternateIcons": {
+            "icon": { "size": 32, "url": "https://localhost:3000/assets/icon-32.png" },
+            "highResolutionIcon": { "size": 64, "url": "https://localhost:3000/assets/icon-64.png" }
+          }
+        }
+      ]
+    }
+  ]
+}
