@@ -4,3 +4,4 @@ dist/
 .DS_Store
 TitleID.txt
 dist-preview/
+.claude/
