@@ -11,7 +11,7 @@
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
   <Id>06577db0-4105-4e43-9a65-aaad5db9a70c</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Probability Step Chart</ProviderName>
+  <ProviderName>Evin Grano</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Probability Step Chart"/>
   <Description DefaultValue="Turn discrete probability distributions into CDF step charts and test stochastic dominance."/>

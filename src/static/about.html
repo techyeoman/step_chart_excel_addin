@@ -3,34 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Probability Step Chart – About</title>
+  <title>Probability Step Chart for Excel</title>
+  <link rel="icon" href="assets/icon-32.png" />
   <style>
-    body { font-family: "Segoe UI", -apple-system, sans-serif; max-width: 720px; margin: 32px auto; padding: 0 16px; line-height: 1.5; color: #222; }
-    h1 { font-size: 24px; } h2 { font-size: 18px; margin-top: 28px; }
-    code { background: #f3f3f3; padding: 1px 4px; border-radius: 3px; }
+    :root { --fg: #1f2328; --muted: #59636e; --accent: #1f6fb2; --line: #d1d9e0; --code: #f3f4f6; --bg: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg: #e6edf3; --muted: #9198a1; --accent: #58a6ff; --line: #3d444d; --code: #262c36; --bg: #0d1117; }
+    }
+    body { font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; max-width: 760px; margin: 32px auto; padding: 0 16px; line-height: 1.55; color: var(--fg); background: var(--bg); }
+    header { display: flex; align-items: center; gap: 14px; }
+    header img { width: 56px; height: 56px; }
+    h1 { font-size: 26px; margin: 0; }
+    h2 { font-size: 19px; margin-top: 32px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+    h3 { font-size: 16px; margin-bottom: 4px; }
+    a { color: var(--accent); }
+    code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 90%; overflow-wrap: anywhere; }
+    .muted { color: var(--muted); }
+    .downloads { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+    .downloads a { display: inline-block; padding: 8px 14px; border: 1px solid var(--accent); border-radius: 6px; text-decoration: none; }
+    .downloads a.primary { background: var(--accent); color: #fff; }
+    ol li, ul li { margin-bottom: 4px; }
   </style>
 </head>
 <body>
-  <h1>Probability Step Chart for Excel</h1>
-  <p>Converts a discrete probability distribution (an outcome column and a probability column) into the duplicated
-    X/Y coordinates of its cumulative distribution function (CDF), draws it as an XY scatter chart with straight
-    lines, compares several distributions on the same axes, and tests first- and second-order stochastic dominance.</p>
+  <header>
+    <img src="assets/icon-128.png" alt="" />
+    <div>
+      <h1>Probability Step Chart for Excel</h1>
+      <div class="muted">Cumulative probability (CDF) step charts and stochastic dominance, inside Excel.</div>
+    </div>
+  </header>
+
+  <p>The add-in converts a discrete probability distribution (an outcome column and a probability column) into the
+    duplicated X/Y coordinates of its cumulative distribution function, draws it as an XY scatter chart with straight
+    lines, compares several distributions on the same axes, and tests first- and second-order stochastic dominance.
+    Works in Excel for Mac, Windows (Microsoft 365, Office 2021/2024) and Excel on the web.</p>
+
+  <h2 id="install">Install</h2>
+  <div class="downloads">
+    <a class="primary" href="manifest.xml" download>Download manifest.xml</a>
+    <a href="probability-step-chart.zip" download>Microsoft 365 app package (.zip)</a>
+    <a href="https://github.com/techyeoman/step_chart_excel_addin">Source on GitHub</a>
+  </div>
+  <p class="muted">Both files point to the add-in hosted on this site, so updates arrive automatically the next
+    time the task pane opens.</p>
+
+  <h3>Excel for Mac</h3>
+  <ol>
+    <li>Quit Excel and download <code>manifest.xml</code>.</li>
+    <li>In Terminal, create Excel's add-in folder and copy the manifest into it:<br />
+      <code>mkdir -p ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef &amp;&amp; cp ~/Downloads/manifest.xml ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/</code></li>
+    <li>Open Excel and a workbook, then choose <b>Home › Add-ins</b> and pick <b>Probability Step Chart</b>.</li>
+  </ol>
+
+  <h3>Excel on the web</h3>
+  <ol>
+    <li>Open a workbook at office.com and choose <b>Home › Add-ins › More Add-ins</b>.</li>
+    <li>Choose <b>My Add-ins › Upload My Add-in</b> and select <code>manifest.xml</code>.</li>
+  </ol>
+
+  <h3>Excel for Windows</h3>
+  <ul>
+    <li><b>Microsoft 365:</b> in Teams choose <b>Apps › Manage your apps › Upload an app › Upload a custom app</b> and select the
+      <code>.zip</code> package, then restart Excel. Use the same Microsoft 365 account as in Excel.</li>
+    <li><b>Any version:</b> put <code>manifest.xml</code> in a shared network folder, add that folder under <b>File › Options ›
+      Trust Center › Trust Center Settings › Trusted Add-in Catalogs</b> (tick <i>Show in Menu</i>), restart Excel,
+      then <b>Home › Add-ins › More Add-ins › Shared Folder</b>.</li>
+    <li><b>Organisations:</b> an administrator can deploy the <code>.zip</code> or <code>manifest.xml</code> from the Microsoft 365
+      admin center under <b>Settings › Integrated apps</b>.</li>
+  </ul>
 
   <h2>How to use</h2>
   <ol>
     <li>Select a two-column range: outcomes in the first column, probabilities in the second (headers optional).</li>
-    <li>Open <b>Home &gt; Step Chart</b> and choose <b>Use selection</b>.</li>
+    <li>Choose <b>Home › Step Chart</b> to open the pane, then <b>Use selection</b>.</li>
     <li>Check the preview, pick an output location and choose <b>Generate CDF coordinates</b>.</li>
-    <li>Repeat with other ranges to compare distributions on the same chart; use the <b>Analysis</b> tab for
-      stochastic dominance.</li>
+    <li>Repeat with other ranges to compare distributions on the same chart. The <b>Analysis</b> tab tests stochastic
+      dominance.</li>
   </ol>
+  <p>A sample workbook is in the
+    <a href="https://github.com/techyeoman/step_chart_excel_addin/tree/main/examples">examples folder</a> of the
+    repository.</p>
 
   <h2 id="privacy">Privacy</h2>
   <p>The add-in runs entirely inside Excel. It reads only the ranges you select, writes only the tables, charts and
-    analysis sheets you ask for, and stores its settings inside the workbook. It sends no workbook data to any
-    server and uses no cookies, analytics or tracking.</p>
+    analysis sheets you ask for, and stores its settings inside the workbook. This site only delivers the add-in's
+    code; no workbook data is ever sent to it or to any other server, and the add-in uses no cookies, analytics or
+    tracking.</p>
 
-  <h2 id="terms">Terms of use</h2>
-  <p>Provided "as is", without warranty of any kind. Verify results before relying on them for decisions.</p>
+  <h2 id="terms">Terms of use and license</h2>
+  <p>Released under the <a href="https://github.com/techyeoman/step_chart_excel_addin/blob/main/LICENSE">MIT License</a>,
+    © 2026 Evin Grano. Provided "as is", without warranty of any kind. Verify results before relying on them for
+    decisions.</p>
 </body>
 </html>

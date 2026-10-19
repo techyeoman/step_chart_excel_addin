@@ -16,6 +16,9 @@ second-order stochastic dominance** — directly inside Excel for Mac, Windows a
 | | | | 53 | 0.7 |
 | | | | 53 | 1 |
 
+**Install it:** https://techyeoman.github.io/step_chart_excel_addin/ has the hosted add-in, a one-click
+`manifest.xml` / app-package download and install steps for Mac, Windows and the web. No build needed.
+
 ---
 
 ## Contents
@@ -32,6 +35,7 @@ second-order stochastic dominance** — directly inside Excel for Mac, Windows a
 - [Packaging and distribution](#packaging-and-distribution)
 - [Troubleshooting](#troubleshooting)
 - [Known limitations](#known-limitations)
+- [License](#license)
 
 ---
 
@@ -320,6 +324,23 @@ These do not replace testing in real Excel. Use the manual checklist in [`docs/I
 
 ## Packaging and distribution
 
+### Hosted on GitHub Pages (automatic)
+
+`.github/workflows/deploy-pages.yml` runs on every push to `main`: `npm ci`, type check, tests, a production
+build with `ADDIN_PUBLIC_URL` set to the Pages URL, manifest validation, `npm run package`, then publishes `dist/` to
+https://techyeoman.github.io/step_chart_excel_addin/. To release a change, push to `main`. Installed copies pick
+up the new web files the next time the pane opens. Only manifest changes (ribbon, permissions) need re-installing,
+and then you should also bump `version` in both manifests. Watch a deploy with:
+
+```bash
+gh run watch
+```
+
+The landing page (`src/static/about.html`, also served as `index.html`) links to the hosted `manifest.xml` and
+`probability-step-chart.zip`.
+
+### Hosting elsewhere
+
 1. **Host the files.** Build with the public HTTPS URL where `dist/` will be served (any static host: Azure Static Web Apps, S3 + CloudFront, GitHub Pages, IIS…):
 
    ```bash
@@ -364,3 +385,9 @@ These do not replace testing in real Excel. Use the manual checklist in [`docs/I
 - Excel 2019 and earlier on Windows are not supported (see compatibility).
 - Text numbers with thousands separators or locale-specific decimal commas (e.g. `"1,5"`) are not parsed. Enter numbers as numeric cells.
 - Removing a distribution deletes only the add-in's generated table and series. If you have moved the generated table yourself, delete it manually.
+
+---
+
+## License
+
+[MIT](LICENSE) © 2026 Evin Grano

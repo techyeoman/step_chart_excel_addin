@@ -1,0 +1,65 @@
+# Build the add-in and publish dist/ to GitHub Pages on every push to main.
+# The manifests are rewritten to the Pages URL during the build
+# (ADDIN_PUBLIC_URL), so the hosted manifest.xml / app-package zip work as-is.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit and integration tests
+        run: npm test
+
+      - id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build for the Pages URL
+        run: npm run build
+        env:
+          ADDIN_PUBLIC_URL: ${{ steps.pages.outputs.base_url }}/
+
+      - name: Validate the built unified manifest
+        run: npx office-addin-manifest validate dist/manifest.json
+
+      - name: Build the Microsoft 365 app package
+        run: npm run package
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

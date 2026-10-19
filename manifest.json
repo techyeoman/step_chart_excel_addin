@@ -12,7 +12,7 @@
     "full": "Converts a discrete probability distribution (outcomes and probabilities) into the duplicated X/Y coordinates of a cumulative distribution function, draws it as an XY scatter step chart, compares several distributions on the same axes, and checks first- and second-order stochastic dominance."
   },
   "developer": {
-    "name": "Probability Step Chart",
+    "name": "Evin Grano",
     "websiteUrl": "https://localhost:3000/about.html",
     "privacyUrl": "https://localhost:3000/about.html#privacy",
     "termsOfUseUrl": "https://localhost:3000/about.html#terms"

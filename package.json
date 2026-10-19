@@ -4,6 +4,12 @@
   "description": "Excel add-in that turns discrete probability distributions into CDF step-chart coordinates, charts them, and tests stochastic dominance.",
   "private": true,
   "license": "MIT",
+  "author": "Evin Grano",
+  "homepage": "https://techyeoman.github.io/step_chart_excel_addin/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techyeoman/step_chart_excel_addin.git"
+  },
   "config": {
     "app_to_debug": "excel",
     "app_type_to_debug": "desktop",

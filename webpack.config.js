@@ -82,6 +82,8 @@ module.exports = async (env, options) => {
         patterns: [
           { from: "assets/*.png", to: "assets/[name][ext]" },
           { from: "src/static/*.html", to: "[name][ext]", transform: rewriteUrls },
+          // The about page doubles as the site's landing page (GitHub Pages root).
+          { from: "src/static/about.html", to: "index.html", transform: rewriteUrls },
           { from: "manifest.json", to: "manifest.json", transform: rewriteUrls },
           { from: "manifest.xml", to: "manifest.xml", transform: rewriteUrls },
         ],
